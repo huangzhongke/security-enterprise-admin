@@ -20,15 +20,18 @@
       <el-table-column prop="id" :label="$t('下单Id')" header-align="center" align="left" width="80"></el-table-column>
       <el-table-column prop="startPort" :label="$t('起始港口')" header-align="center" align="left"></el-table-column>
       <el-table-column prop="endPort" :label="$t('目的港口')" header-align="center" align="left"></el-table-column>
-      <el-table-column :formatter="formatterEquipment" prop="equipment" :label="$t('柜子类型')" header-align="center" align="left"></el-table-column>
+      <el-table-column :formatter="formatterEquipment" prop="equipment" :label="$t('柜子类型')" header-align="center"
+                       align="left"></el-table-column>
       <el-table-column prop="quantity" :label="$t('数量')" header-align="center" align="left"></el-table-column>
       <el-table-column prop="orderSleepTime" :label="$t('休眠时间')" header-align="center" align="left"></el-table-column>
       <el-table-column prop="orderDate" :label="$t('下单时间')" header-align="center" align="left"></el-table-column>
-      <el-table-column :formatter="formatterProxy"  prop="isProxy" :label="$t('使用代理')" header-align="center"
+      <el-table-column :formatter="formatterProxy" prop="isProxy" :label="$t('使用代理')" header-align="center"
                        align="left"></el-table-column>
-      <el-table-column :formatter="formatterSupplierName"  prop="isNeedSupplierName" :label="$t('是否指定供应商')" header-align="center"
+      <el-table-column :formatter="formatterSupplierName" prop="isNeedSupplierName" :label="$t('是否指定供应商')"
+                       header-align="center"
                        align="left"></el-table-column>
-      <el-table-column :formatter="formatterLineName"  prop="isNeedLineName" :label="$t('是否指定航名航次')" header-align="center"
+      <el-table-column :formatter="formatterLineName" prop="isNeedLineName" :label="$t('是否指定航名航次')"
+                       header-align="center"
                        align="left"></el-table-column>
       <el-table-column prop="supplierName" :label="$t('供应商名')" header-align="center" align="left"></el-table-column>
       <el-table-column prop="vessel" :label="$t('航线名')" header-align="center" align="left"></el-table-column>
@@ -63,22 +66,7 @@ export default {
         getDataListIsPage: true
       },
       dataForm: {
-        id: '',
-        startPort: '',
-        endPort: '',
-        equipment: '',
-        quantity: '',
-        orderSleepTime: '',
-        orderDate: '',
-        isProxy: '',
-        isNeedSupplierName: '',
-        isNeedLineName: '',
-        supplierName: '',
-        vesselName: '',
-        voyage: '',
-        account: '',
-        etd: '',
-        reference: ''
+        id: ''
       }
     }
   },
@@ -87,7 +75,7 @@ export default {
       this.visible = true
       this.getDataList()
     },
-    formatterProxy (row, column) {
+    formatterProxy(row, column) {
       if (row.isProxy === true) {
         return '是'
       } else {
@@ -125,7 +113,9 @@ export default {
       } else if (row.equipment === '45G1') {
         return '40HQ'
       } else if (row.equipment === 'L5G1') {
-        return '45RD'
+        return '45HQ'
+      } else if (row.equipment === '45RD') {
+        return 'NOR'
       }
     }
   }

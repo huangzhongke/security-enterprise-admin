@@ -99,7 +99,8 @@ export default {
         exportURL: '/sys/schedule/order/export'
       },
       dataForm: {
-        beanName: ''
+        beanName: '',
+        type: this.getType()
       },
       logVisible: false,
       orderVisible: false,
@@ -127,7 +128,7 @@ export default {
           duration: 500
         })
       }
-      this.$confirm(this.$t('prompt.info', { 'handle': this.$t('schedule.pause') }), this.$t('prompt.title'), {
+      this.$confirm(this.$t('prompt.info', { handle: this.$t('schedule.pause') }), this.$t('prompt.title'), {
         confirmButtonText: this.$t('confirm'),
         cancelButtonText: this.$t('cancel'),
         type: 'warning'
@@ -156,7 +157,7 @@ export default {
           duration: 500
         })
       }
-      this.$confirm(this.$t('prompt.info', { 'handle': this.$t('schedule.resume') }), this.$t('prompt.title'), {
+      this.$confirm(this.$t('prompt.info', { handle: this.$t('schedule.resume') }), this.$t('prompt.title'), {
         confirmButtonText: this.$t('confirm'),
         cancelButtonText: this.$t('cancel'),
         type: 'warning'
@@ -185,7 +186,7 @@ export default {
           duration: 500
         })
       }
-      this.$confirm(this.$t('prompt.info', { 'handle': this.$t('schedule.run') }), this.$t('prompt.title'), {
+      this.$confirm(this.$t('prompt.info', { handle: this.$t('schedule.run') }), this.$t('prompt.title'), {
         confirmButtonText: this.$t('confirm'),
         cancelButtonText: this.$t('cancel'),
         type: 'warning'
@@ -234,6 +235,14 @@ export default {
       this.$nextTick(() => {
         this.$refs.order.init()
       })
+    },
+    getType () {
+      if (this.$route.params.crawlerType === 'one') {
+        return 0
+      }
+      if (this.$route.params.crawlerType === 'oocl') {
+        return 1
+      }
     }
   }
 }
