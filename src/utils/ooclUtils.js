@@ -1,9 +1,12 @@
 import http from './request'
 
-export function getAccountList () {
+export function getAccountList (a) {
   return http({
     url: '/oocl/account',
-    method: 'GET'
+    method: 'GET',
+    params: {
+      isOrderAccount: a
+    }
   })
 }
 

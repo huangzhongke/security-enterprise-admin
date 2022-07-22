@@ -26,10 +26,10 @@
         <el-form-item>
           <el-button type="success" @click="logHandle()">{{ $t('schedule.log') }}</el-button>
         </el-form-item>
-        <el-form-item>
+        <el-form-item v-if="showOrderList">
           <el-button type="success" @click="orderHandle()">{{ $t('下单列表') }}</el-button>
         </el-form-item>
-        <el-form-item>
+        <el-form-item v-if="showOrderList">
           <el-button  type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
         </el-form-item>
       </el-form>
@@ -73,9 +73,11 @@
       <!-- 弹窗, 新增 / 修改 -->
       <add-or-update-one v-if="oneVisible" ref="addOrUpdateOne" @refreshDataList="getDataList"></add-or-update-one>
       <add-or-update-oocl v-if="ooclVisible" ref="addOrUpdateOocl" @refreshDataList="getDataList"></add-or-update-oocl>
+      <add-or-update-cosco v-if="coscoVisible" ref="addOrUpdateCosco" @refreshDataList="getDataList"></add-or-update-cosco>
+      <add-or-update-monitor v-if="monitorVisible" ref="addOrUpdateMonitor" @refreshDataList="getDataList"></add-or-update-monitor>
       <!-- 弹窗, 日志列表 -->
       <log v-if="logVisible" ref="log"></log>
-      <Order v-if="orderVisible" ref="order"></Order>
+      <OneOrder v-if="orderVisible" ref="order"></OneOrder>
 
     </div>
   </el-card>
@@ -85,8 +87,10 @@
 import mixinViewModule from '@/mixins/view-module'
 import AddOrUpdateOne from './schedule-add-or-update-one'
 import AddOrUpdateOocl from './schedule-add-or-update-oocl'
+import AddOrUpdateCosco from './schedule-add-or-update-cosco'
+import AddOrUpdateMonitor from './schedule-add-or-update-monitor'
 import Log from './schedule-log'
-import Order from './schedule-order'
+import OneOrder from './schedule-order-one'
 export default {
   mixins: [mixinViewModule],
   data () {
@@ -105,7 +109,15 @@ export default {
       logVisible: false,
       orderVisible: false,
       oneVisible: false,
-      ooclVisible: false
+      ooclVisible: false,
+      coscoVisible: false,
+      monitorVisible: false,
+      showOrderList: false
+    }
+  },
+  beforeMount () {
+    if (this.$route.params.crawlerType === 'one') {
+      this.showOrderList = true
     }
   },
   components: {
@@ -116,7 +128,11 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     AddOrUpdateOocl,
     // eslint-disable-next-line vue/no-unused-components
-    Order
+    OneOrder,
+    // eslint-disable-next-line vue/no-unused-components
+    AddOrUpdateCosco,
+    // eslint-disable-next-line vue/no-unused-components
+    AddOrUpdateMonitor
   },
   methods: {
     // 暂停
@@ -220,6 +236,18 @@ export default {
           this.$refs.addOrUpdateOocl.dataForm.id = id
           this.$refs.addOrUpdateOocl.init()
         })
+      } else if (this.$route.params.crawlerType === 'cosco') {
+        this.coscoVisible = true
+        this.$nextTick(() => {
+          this.$refs.addOrUpdateCosco.dataForm.id = id
+          this.$refs.addOrUpdateCosco.init()
+        })
+      } else if (this.$route.params.crawlerType === 'monitor') {
+        this.monitorVisible = true
+        this.$nextTick(() => {
+          this.$refs.addOrUpdateMonitor.dataForm.id = id
+          this.$refs.addOrUpdateMonitor.init()
+        })
       }
       // this.addOrUpdateVisible = true
     },
@@ -242,6 +270,12 @@ export default {
       }
       if (this.$route.params.crawlerType === 'oocl') {
         return 1
+      }
+      if (this.$route.params.crawlerType === 'cosco') {
+        return 2
+      }
+      if (this.$route.params.crawlerType === 'monitor') {
+        return 3
       }
     }
   }

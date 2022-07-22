@@ -58,10 +58,6 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="冷箱频道" :label-width="formLabelWidth" prop="isColdType">
-        <el-radio v-model="dataForm.isColdType" :label=true>是</el-radio>
-        <el-radio v-model="dataForm.isColdType" :label=false>否</el-radio>
-      </el-form-item>
       <el-form-item label="集装箱类型" :label-width="formLabelWidth" prop="equipment">
         <el-select v-model="dataForm.equipment" placeholder="请选择">
           <el-option
@@ -182,8 +178,7 @@ export default {
         endDate: '',
         childAccount: [],
         isNeedVesselName: false,
-        type: 1,
-        isColdType: false
+        type: 2
       },
       cronPopover: false,
       dialogTableVisible: false,
@@ -215,14 +210,6 @@ export default {
         {
           value: '40HQ',
           label: '40HQ'
-        },
-        {
-          value: '20RF',
-          label: '20RF'
-        },
-        {
-          value: '40RQ',
-          label: '40RQ'
         }
       ],
       accountList: [],

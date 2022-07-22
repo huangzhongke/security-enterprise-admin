@@ -3,7 +3,7 @@ const t = {}
 t.loading = '加载中...'
 
 t.brand = {}
-t.brand.lg = '环集ONE前端版'
+t.brand.lg = '环集Spider前端版'
 t.brand.mini = '环集'
 
 t.add = '新增'
@@ -77,7 +77,7 @@ t.login.copyright = '环集'
 t.home = {}
 t.home.sysInfo = {}
 t.home.sysInfo.name = '系统名称'
-t.home.sysInfo.nameVal = '环集ONE前端版'
+t.home.sysInfo.nameVal = '环集Spider'
 t.home.sysInfo.version = '版本信息'
 t.home.sysInfo.versionVal = window.SITE_CONFIG['version']
 t.home.sysInfo.osName = '操作系统'

@@ -16,7 +16,7 @@
               :value="item.user"
           />
         </el-select>
-        <el-button @click="login" type="primary" :loading="isCommitLogin" style="margin-left: 20px"
+        <el-button  @click="login" type="primary" :loading="isCommitLogin" style="margin-left: 20px"
                    :disabled="dataForm.account===''">登录
         </el-button>
       </el-form-item>
@@ -58,36 +58,6 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="冷箱频道" :label-width="formLabelWidth" prop="isColdType">
-        <el-radio v-model="dataForm.isColdType" :label=true>是</el-radio>
-        <el-radio v-model="dataForm.isColdType" :label=false>否</el-radio>
-      </el-form-item>
-      <el-form-item label="集装箱类型" :label-width="formLabelWidth" prop="equipment">
-        <el-select v-model="dataForm.equipment" placeholder="请选择">
-          <el-option
-              v-for="item in equipmentType"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="数量" :label-width="formLabelWidth" prop="quantity">
-        <el-input-number v-model.number="dataForm.quantity" :min="1" :max="100" label="集装箱数量"></el-input-number>
-      </el-form-item>
-      <el-form-item label="指定航名航次" :label-width="formLabelWidth" prop="isNeedVesselName">
-        <el-radio v-model="dataForm.isNeedVesselName" :label=true>是</el-radio>
-        <el-radio v-model="dataForm.isNeedVesselName" :label=false>否</el-radio>
-      </el-form-item>
-      <el-form-item v-if="dataForm.isNeedVesselName" label="航名" :label-width="formLabelWidth" prop="vesselName">
-        <el-input v-model="dataForm.vesselName" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item v-if="dataForm.isNeedVesselName" label="航次" :label-width="formLabelWidth" prop="voyage">
-        <el-input v-model="dataForm.voyage" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="可接受最大价格" :label-width="formLabelWidth" prop="price">
-        <el-input-number v-model.number="dataForm.price" :min="0" :max="99999"></el-input-number>
-      </el-form-item>
       <el-form-item label="预计开航时间">
         <el-col :span="11">
           <el-date-picker  type="date" placeholder="最早开航时间" v-model="dataForm.startDate" style="width: 100%;"></el-date-picker>
@@ -96,16 +66,6 @@
         <el-col :span="11">
           <el-date-picker type="date" placeholder="最晚开航时间" v-model="dataForm.endDate" style="width: 100%;"></el-date-picker>
         </el-col>
-      </el-form-item>
-      <el-form-item label="搜索子账号" :label-width="formLabelWidth" prop="orderAccount">
-        <el-select v-model="dataForm.childAccount" multiple placeholder="请选择">
-          <el-option
-              v-for="item in childAccountList"
-              :key="item.id"
-              :label="item.user"
-              :value="item.user">
-          </el-option>
-        </el-select>
       </el-form-item>
       <el-form-item prop="cronExpression" :label="$t('schedule.cronExpression')">
         <el-popover v-model="cronPopover">
@@ -170,20 +130,13 @@ export default {
           unlocode: '',
           updateTime: ''
         },
-        equipment: '',
-        vesselName: '',
-        voyage: '',
-        quantity: 1,
-        price: 0,
         account: '',
         cookie: '',
         token: '',
         startDate: '',
         endDate: '',
-        childAccount: [],
-        isNeedVesselName: false,
-        type: 1,
-        isColdType: false
+        type: 3,
+        flag: false
       },
       cronPopover: false,
       dialogTableVisible: false,
@@ -203,30 +156,7 @@ export default {
         list: [],
         loading: false
       },
-      equipmentType: [
-        {
-          value: '20GP',
-          label: '20GP'
-        },
-        {
-          value: '40GP',
-          label: '40GP'
-        },
-        {
-          value: '40HQ',
-          label: '40HQ'
-        },
-        {
-          value: '20RF',
-          label: '20RF'
-        },
-        {
-          value: '40RQ',
-          label: '40RQ'
-        }
-      ],
-      accountList: [],
-      childAccountList: []
+      accountList: []
     }
   },
   components: {
@@ -239,24 +169,6 @@ export default {
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         cronExpression: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        account: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        showStartPortName: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        showEndPortName: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        equipment: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        startDate: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        childAccount: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }
@@ -335,7 +247,6 @@ export default {
         this.showEndPortName = ''
         this.dataForm.startDate = ''
         this.dataForm.endDate = ''
-        this.dataForm.childAccount = []
         this.$refs.dataForm.resetFields()
         if (this.dataForm.id) {
           this.getInfo()
@@ -365,7 +276,7 @@ export default {
           return false
         }
         const formMap = {
-          tag: 'oocl',
+          tag: 'monitor',
           data: JSON.stringify(this.dataForm)
         }
         this.isCommitForm = true
@@ -390,12 +301,11 @@ export default {
     }, 1000, { leading: true, trailing: false })
   },
   mounted () {
-    getAccountList(true).then(({ data: res }) => {
+    getAccountList(false).then(({ data: res }) => {
       this.accountList = res.data
     })
-    getAccountList(false).then(({ data: res }) => {
-      this.childAccountList = res.data
-    })
+  },
+  beforeMount () {
     this.dataForm.cookie = ''
     this.dataForm.token = ''
   }
