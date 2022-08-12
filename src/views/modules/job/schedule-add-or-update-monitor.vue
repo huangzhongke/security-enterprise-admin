@@ -235,7 +235,7 @@ export default {
           this.dataForm.cookie = res.data.cookie
           this.dataForm.token = res.data.token
         } else {
-          this.$message.error('登陆失败')
+          this.$message.error(res.msg)
         }
         this.isCommitLogin = false
       })
@@ -301,7 +301,7 @@ export default {
     }, 1000, { leading: true, trailing: false })
   },
   mounted () {
-    getAccountList(false).then(({ data: res }) => {
+    getAccountList(false, 0).then(({ data: res }) => {
       this.accountList = res.data
     })
   },

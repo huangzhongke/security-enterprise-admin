@@ -124,7 +124,8 @@
 <script>
 import debounce from 'lodash/debounce'
 import { cron } from 'vue-cron'
-import { getAccountList, loginUser, getPort } from '../../../utils/ooclUtils'
+import { getAccountList } from '../../../utils/ooclUtils'
+import { loginUser, getPort } from '@/utils/coscoUtils'
 
 export default {
   data () {
@@ -139,32 +140,30 @@ export default {
         remark: '',
         status: 0,
         startPort: {
-          bookingTerritory: '',
           cityFullNameCn: '',
           cityFullNameEn: '',
           cityName: '',
-          equalsScore: '',
+          ctryName: '',
           id: '',
           isActive: '',
-          orderScore: '',
           stateCode: '',
           stateName: '',
           unlocode: '',
-          updateTime: ''
+          updateTime: '',
+          updateBy: ''
         },
         endPort: {
-          bookingTerritory: '',
           cityFullNameCn: '',
           cityFullNameEn: '',
           cityName: '',
-          equalsScore: '',
+          ctryName: '',
           id: '',
           isActive: '',
-          orderScore: '',
           stateCode: '',
           stateName: '',
           unlocode: '',
-          updateTime: ''
+          updateTime: '',
+          updateBy: ''
         },
         equipment: '',
         vesselName: '',
@@ -310,7 +309,7 @@ export default {
           this.dataForm.cookie = res.data.cookie
           this.dataForm.token = res.data.token
         } else {
-          this.$message.error('登陆失败')
+          this.$message.error(res.msg)
         }
         this.isCommitLogin = false
       })
@@ -352,7 +351,7 @@ export default {
           return false
         }
         const formMap = {
-          tag: 'oocl',
+          tag: 'cosco',
           data: JSON.stringify(this.dataForm)
         }
         this.isCommitForm = true
@@ -377,10 +376,10 @@ export default {
     }, 1000, { leading: true, trailing: false })
   },
   mounted () {
-    getAccountList(true).then(({ data: res }) => {
+    getAccountList(true, 1).then(({ data: res }) => {
       this.accountList = res.data
     })
-    getAccountList(false).then(({ data: res }) => {
+    getAccountList(false, 1).then(({ data: res }) => {
       this.childAccountList = res.data
     })
     this.dataForm.cookie = ''

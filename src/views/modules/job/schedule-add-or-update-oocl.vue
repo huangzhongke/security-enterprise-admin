@@ -390,10 +390,10 @@ export default {
     }, 1000, { leading: true, trailing: false })
   },
   mounted () {
-    getAccountList(true).then(({ data: res }) => {
+    getAccountList(true, 0).then(({ data: res }) => {
       this.accountList = res.data
     })
-    getAccountList(false).then(({ data: res }) => {
+    getAccountList(false, 0).then(({ data: res }) => {
       this.childAccountList = res.data
     })
     this.dataForm.cookie = ''
