@@ -1,12 +1,12 @@
 import http from './request'
 
-export function getAccountList (a, b) {
+export function getAccountList (isOrderAccount, accountType) {
   return http({
-    url: '/spider/account/oocl',
+    url: '/spider/account/list',
     method: 'GET',
     params: {
-      isOrderAccount: a,
-      type: b
+      isOrderAccount: isOrderAccount,
+      type: accountType
     }
   })
 }

@@ -90,11 +90,13 @@
       </el-form-item>
       <el-form-item label="预计开航时间">
         <el-col :span="11">
-          <el-date-picker  type="date" placeholder="最早开航时间" v-model="dataForm.startDate" style="width: 100%;"></el-date-picker>
+          <el-date-picker type="date" placeholder="最早开航时间" v-model="dataForm.startDate"
+                          style="width: 100%;"></el-date-picker>
         </el-col>
         <el-col class="line" :span="2">-</el-col>
         <el-col :span="11">
-          <el-date-picker type="date" placeholder="最晚开航时间" v-model="dataForm.endDate" style="width: 100%;"></el-date-picker>
+          <el-date-picker type="date" placeholder="最晚开航时间" v-model="dataForm.endDate"
+                          style="width: 100%;"></el-date-picker>
         </el-col>
       </el-form-item>
       <el-form-item label="搜索子账号" :label-width="formLabelWidth" prop="orderAccount">
@@ -236,29 +238,49 @@ export default {
     dataRule () {
       return {
         beanName: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+          {
+            required: true,
+            message: this.$t('validate.required'),
+            trigger: 'blur'
+          }
         ],
         cronExpression: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+          {
+            required: true,
+            message: this.$t('validate.required'),
+            trigger: 'blur'
+          }
         ],
         account: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        showStartPortName: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        showEndPortName: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+          {
+            required: true,
+            message: this.$t('validate.required'),
+            trigger: 'blur'
+          }
         ],
         equipment: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+          {
+            required: true,
+            message: this.$t('validate.required'),
+            trigger: 'blur'
+          }
         ],
         startDate: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        childAccount: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+          {
+            required: true,
+            message: this.$t('validate.required'),
+            trigger: 'blur'
+          }
         ]
+        // childAccount: [
+        //   {
+        //     validator: (rule, value, component) => {
+        //       if (value === []) {
+        //         callback(new Error('搜索子账号列表不能为空'))
+        //       }
+        //     }
+        //   }
+        // ]
       }
     }
   },
@@ -387,7 +409,10 @@ export default {
         }).catch(() => {
         })
       })
-    }, 1000, { leading: true, trailing: false })
+    }, 1000, {
+      leading: true,
+      trailing: false
+    })
   },
   mounted () {
     getAccountList(true, 0).then(({ data: res }) => {

@@ -9,16 +9,16 @@
           <el-button @click="getDataList()">{{ $t('query') }}</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button  type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
+          <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button  type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
+          <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button  type="danger" @click="pauseHandle()">{{ $t('schedule.pauseBatch') }}</el-button>
+          <el-button type="danger" @click="pauseHandle()">{{ $t('schedule.pauseBatch') }}</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button  type="danger" @click="resumeHandle()">{{ $t('schedule.resumeBatch') }}</el-button>
+          <el-button type="danger" @click="resumeHandle()">{{ $t('schedule.resumeBatch') }}</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="danger" @click="runHandle()">{{ $t('schedule.runBatch') }}</el-button>
@@ -26,26 +26,31 @@
         <el-form-item>
           <el-button type="success" @click="logHandle()">{{ $t('schedule.log') }}</el-button>
         </el-form-item>
-        <el-form-item v-if="showOrderList">
+        <el-form-item v-if="this.$route.params.crawlerType != 'monitor'">
           <el-button type="success" @click="orderHandle()">{{ $t('下单列表') }}</el-button>
         </el-form-item>
         <el-form-item v-if="showOrderList">
-          <el-button  type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
+          <el-button type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
         </el-form-item>
       </el-form>
       <el-table
-        v-loading="dataListLoading"
-        :data="temp"
-        border
-        @selection-change="dataListSelectionChangeHandle"
-        @sort-change="dataListSortChangeHandle"
-        style="width: 100%;">
+          v-loading="dataListLoading"
+          :data="temp"
+          border
+          @selection-change="dataListSelectionChangeHandle"
+          @sort-change="dataListSortChangeHandle"
+          style="width: 100%;">
         <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-        <el-table-column prop="beanName" :label="$t('schedule.beanName')" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="params" :label="$t('schedule.params')" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="cronExpression" :label="$t('schedule.cronExpression')" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="remark" :label="$t('schedule.remark')" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="status" :label="$t('schedule.status')" sortable="custom" header-align="center" align="center">
+        <el-table-column prop="beanName" :label="$t('schedule.beanName')" header-align="center"
+                         align="center"></el-table-column>
+        <el-table-column prop="params" :label="$t('schedule.params')" header-align="center"
+                         align="center"></el-table-column>
+        <el-table-column prop="cronExpression" :label="$t('schedule.cronExpression')" header-align="center"
+                         align="center"></el-table-column>
+        <el-table-column prop="remark" :label="$t('schedule.remark')" header-align="center"
+                         align="center"></el-table-column>
+        <el-table-column prop="status" :label="$t('schedule.status')" sortable="custom" header-align="center"
+                         align="center">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.status === 1" size="small">{{ $t('schedule.status1') }}</el-tag>
             <el-tag v-else size="small" type="danger">{{ $t('schedule.status0') }}</el-tag>
@@ -53,32 +58,42 @@
         </el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
-            <el-button  type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
-            <el-button  type="text" size="small" @click="pauseHandle(scope.row.id)">{{ $t('schedule.pause') }}</el-button>
-            <el-button  type="text" size="small" @click="resumeHandle(scope.row.id)">{{ $t('schedule.resume') }}</el-button>
+            <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
+            <el-button type="text" size="small" @click="pauseHandle(scope.row.id)">{{
+                $t('schedule.pause')
+              }}
+            </el-button>
+            <el-button type="text" size="small" @click="resumeHandle(scope.row.id)">{{
+                $t('schedule.resume')
+              }}
+            </el-button>
             <el-button type="text" size="small" @click="runHandle(scope.row.id)">{{ $t('schedule.run') }}</el-button>
-            <el-button  type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
+            <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
-        :current-page="page"
-        :page-sizes="[10, 20, 50, 100]"
-        :page-size="limit"
-        :total="total"
-        layout="total, sizes, prev, pager, next, jumper"
-        @size-change="pageSizeChangeHandle"
-        @current-change="pageCurrentChangeHandle">
+          :current-page="page"
+          :page-sizes="[10, 20, 50, 100]"
+          :page-size="limit"
+          :total="total"
+          layout="total, sizes, prev, pager, next, jumper"
+          @size-change="pageSizeChangeHandle"
+          @current-change="pageCurrentChangeHandle">
       </el-pagination>
       <!-- 弹窗, 新增 / 修改 -->
       <add-or-update-one v-if="oneVisible" ref="addOrUpdateOne" @refreshDataList="getDataList"></add-or-update-one>
       <add-or-update-oocl v-if="ooclVisible" ref="addOrUpdateOocl" @refreshDataList="getDataList"></add-or-update-oocl>
-      <add-or-update-cosco v-if="coscoVisible" ref="addOrUpdateCosco" @refreshDataList="getDataList"></add-or-update-cosco>
-      <add-or-update-monitor v-if="monitorVisible" ref="addOrUpdateMonitor" @refreshDataList="getDataList"></add-or-update-monitor>
+      <add-or-update-cosco v-if="coscoVisible" ref="addOrUpdateCosco"
+                           @refreshDataList="getDataList"></add-or-update-cosco>
+      <add-or-update-monitor v-if="monitorVisible" ref="addOrUpdateMonitor"
+                             @refreshDataList="getDataList"></add-or-update-monitor>
+      <add-or-update-cma v-if="cmaVisible" ref="addOrUpdateCma"  @refreshDataList="getDataList"></add-or-update-cma>
+      <add-or-update-collectors v-if="collectorsVisible" ref="addOrUpdateCollectors"  @refreshDataList="getDataList"></add-or-update-collectors>
       <!-- 弹窗, 日志列表 -->
       <log v-if="logVisible" ref="log"></log>
       <OneOrder v-if="orderVisible" ref="order"></OneOrder>
-
+      <CoscoOoclOrder v-if="coscoOoclOrderVisible" ref="tOrder"></CoscoOoclOrder>
     </div>
   </el-card>
 </template>
@@ -89,8 +104,12 @@ import AddOrUpdateOne from './schedule-add-or-update-one'
 import AddOrUpdateOocl from './schedule-add-or-update-oocl'
 import AddOrUpdateCosco from './schedule-add-or-update-cosco'
 import AddOrUpdateMonitor from './schedule-add-or-update-monitor'
+import AddOrUpdateCma from './schedule-add-or-update-cma'
 import Log from './schedule-log'
 import OneOrder from './schedule-order-one'
+import CoscoOoclOrder from './schedule-order-cosco-oocl'
+import AddOrUpdateCollectors from '@/views/modules/job/schedule-add-or-update-collectors'
+
 export default {
   mixins: [mixinViewModule],
   data () {
@@ -112,7 +131,10 @@ export default {
       ooclVisible: false,
       coscoVisible: false,
       monitorVisible: false,
-      showOrderList: false
+      cmaVisible: false,
+      collectorsVisible: false,
+      showOrderList: false,
+      coscoOoclOrderVisible: false
     }
   },
   beforeMount () {
@@ -123,16 +145,14 @@ export default {
   components: {
     // eslint-disable-next-line vue/no-unused-components
     AddOrUpdateOne,
-    // eslint-disable-next-line vue/no-unused-components
     Log,
-    // eslint-disable-next-line vue/no-unused-components
     AddOrUpdateOocl,
-    // eslint-disable-next-line vue/no-unused-components
     OneOrder,
-    // eslint-disable-next-line vue/no-unused-components
     AddOrUpdateCosco,
-    // eslint-disable-next-line vue/no-unused-components
-    AddOrUpdateMonitor
+    AddOrUpdateMonitor,
+    CoscoOoclOrder,
+    AddOrUpdateCma,
+    AddOrUpdateCollectors
   },
   methods: {
     // 暂停
@@ -161,8 +181,10 @@ export default {
               this.getDataList()
             }
           })
-        }).catch(() => {})
-      }).catch(() => {})
+        }).catch(() => {
+        })
+      }).catch(() => {
+      })
     },
     // 恢复
     resumeHandle (id) {
@@ -190,8 +212,10 @@ export default {
               this.getDataList()
             }
           })
-        }).catch(() => {})
-      }).catch(() => {})
+        }).catch(() => {
+        })
+      }).catch(() => {
+      })
     },
     // 执行
     runHandle (id) {
@@ -219,8 +243,10 @@ export default {
               this.getDataList()
             }
           })
-        }).catch(() => {})
-      }).catch(() => {})
+        }).catch(() => {
+        })
+      }).catch(() => {
+      })
     },
     // 新增 / 修改
     addOrUpdateHandle (id) {
@@ -248,6 +274,18 @@ export default {
           this.$refs.addOrUpdateMonitor.dataForm.id = id
           this.$refs.addOrUpdateMonitor.init()
         })
+      } else if (this.$route.params.crawlerType === 'cma') {
+        this.cmaVisible = true
+        this.$nextTick(() => {
+          this.$refs.addOrUpdateCma.dataForm.id = id
+          this.$refs.addOrUpdateCma.init()
+        })
+      } else if (this.$route.params.crawlerType === 'all') {
+        this.collectorsVisible = true
+        this.$nextTick(() => {
+          this.$refs.addOrUpdateCollectors.dataForm.id = id
+          this.$refs.addOrUpdateCollectors.init()
+        })
       }
       // this.addOrUpdateVisible = true
     },
@@ -259,10 +297,17 @@ export default {
       })
     },
     orderHandle () {
-      this.orderVisible = true
-      this.$nextTick(() => {
-        this.$refs.order.init()
-      })
+      if (this.$route.params.crawlerType === 'one') {
+        this.orderVisible = true
+        this.$nextTick(() => {
+          this.$refs.order.init()
+        })
+      } else if (this.$route.params.crawlerType === 'cosco' || this.$route.params.crawlerType === 'oocl') {
+        this.coscoOoclOrderVisible = true
+        this.$nextTick(() => {
+          this.$refs.tOrder.init()
+        })
+      }
     },
     getType () {
       if (this.$route.params.crawlerType === 'one') {
@@ -276,6 +321,12 @@ export default {
       }
       if (this.$route.params.crawlerType === 'monitor') {
         return 3
+      }
+      if (this.$route.params.crawlerType === 'cma') {
+        return 4
+      }
+      if (this.$route.params.crawlerType === 'all') {
+        return 5
       }
     }
   }

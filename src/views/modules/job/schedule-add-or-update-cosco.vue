@@ -379,7 +379,7 @@ export default {
     getAccountList(true, 1).then(({ data: res }) => {
       this.accountList = res.data
     })
-    getAccountList(false, 1).then(({ data: res }) => {
+    getAccountList(true, 1).then(({ data: res }) => {
       this.childAccountList = res.data
     })
     this.dataForm.cookie = ''

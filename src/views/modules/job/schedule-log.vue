@@ -51,7 +51,8 @@ export default {
         getDataListIsPage: true
       },
       dataForm: {
-        jobId: ''
+        jobId: '',
+        beanName: this.$route.params.crawlerType
       }
     }
   },
